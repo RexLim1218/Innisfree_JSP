@@ -1,0 +1,238 @@
+<%-- 
+    Document   : Profile
+    Created on : Apr 22, 2023, 10:41:16 PM
+    Author     : Yu Xuan
+--%>
+
+<%@page import="java.util.ArrayList"%>
+<%@page import="Domain.Address"%>
+<%@page import="DataAccess.AddressDA"%>
+<%@page import="Domain.Customer"%>
+<%@page import="DataAccess.CustomerDA"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="multikart">
+        <meta name="keywords" content="multikart">
+        <meta name="author" content="multikart">
+
+        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+        <meta http-equiv="Pragma" content="no-cache" />
+        <meta http-equiv="Expires" content="0" />
+<link rel="icon" href="../../../assets/images/favicon/3.png" type="image/x-icon">
+        <title>Innisfree | Make You Better</title>
+
+        <!--Google font-->
+        <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Yellowtail&display=swap" rel="stylesheet">
+
+        <!-- Icons -->
+        <link rel="stylesheet" type="text/css" href="../../../assets/css/vendors/font-awesome.css">
+
+        <!--Slick slider css-->
+        <link rel="stylesheet" type="text/css" href="../../../assets/css/vendors/slick.css">
+        <link rel="stylesheet" type="text/css" href="../../../assets/css/vendors/slick-theme.css">
+
+        <!-- Animate icon -->
+        <link rel="stylesheet" type="text/css" href="../../../assets/css/vendors/animate.css">
+
+        <!-- Themify icon -->
+        <link rel="stylesheet" type="text/css" href="../../../assets/css/vendors/themify-icons.css">
+
+        <!-- Bootstrap css -->
+        <link rel="stylesheet" type="text/css" href="../../../assets/css/vendors/bootstrap.css">
+
+        <!-- Theme css -->
+        <link rel="stylesheet" type="text/css" href="../../../assets/css/style.css">
+
+        <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    </head>
+
+    <body class="theme-color-1">
+
+        <%
+            response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+            response.setHeader("Pragma", "no-cache");
+            response.setHeader("Expires", "0");
+        %>
+        <!-- header start -->
+        <%@include file="../cust.Header_Log.jsp" %>
+
+        <!-- breadcrumb start -->
+        <div class="breadcrumb-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="page-title">
+                            <h2>profile</h2>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <nav aria-label="breadcrumb" class="theme-breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="../homepage/homepage.jsp">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Address</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- breadcrumb End -->
+
+
+
+
+        <%
+            Customer c = (Customer) session.getAttribute("customerLogin");
+            AddressDA addressDA = new AddressDA();
+            ArrayList<Address> addressArray = addressDA.getAllAddress(c.getCustID());
+        %>
+
+        <!-- personal detail section start -->
+        <section class="contact-page register-page">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                       
+                        <form class="theme-form" action="${pageContext.servletContext.contextPath}/Profile"  method="post" id="Profile">
+
+                            <div class="col-sm-12">
+
+                                <form class="theme-form">
+                                    <div class="form-row row" id = "Address">
+                                        <%int i = 1;
+                                            for (Address a : addressArray) {
+
+                                        %>
+                                        <h5><b>SHIPPING ADDRESS <%=i%> </b><a href="ModifyAddress.jsp?addressID=<%=a.getAddressID()%>" id="editBtn" class="" role="button" style="margin-right: 10px;">
+                                                                <i class="far fa-edit" title="Edit"></i>
+                                                            </a></h5>
+                                        <%i++;%>
+                                        <style>
+                                            h5{
+                                                font-size: 25px;
+                                                margin-bottom: 30px;
+                                               
+                                            }
+                                            </style>
+                                        <input type="hidden" value="<%=a.getAddressID()%>" name="addr_ID"/>
+                                        <div class="col-md-6">
+                                            <input type="radio"  id="addr_Type_<%=a.getAddressID()%>" name="addr_Type_<%=a.getAddressID()%>" value ="<%=a.getAddr_Type()%>" <% if ("Default".equals(a.getAddr_Type())) { %>checked<% }%> style="visibility: visible; opacity: 1;"/>
+                                                                          <label for="Default">Default</label> 
+                                        </div>
+
+                                        <div class="col-md-6">
+                                                                        <input type="radio" id="addr_Type_<%=a.getAddressID()%>" name="addr_Type_<%=a.getAddressID()%>"  value ="<%=a.getAddr_Type()%>"  <% if ("Optional".equals(a.getAddr_Type())) { %>checked<% }%> style="visibility: visible; opacity: 1;"/>
+                                                                        <label for="Optional">Optional</label><br>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label for="name">Address Details</label>
+                                            <input type="text" readonly="" class="form-control" id="addr_details" placeholder="E.g 1-12-22, Lorong Permai Jaya" name="addr_details"
+                                                   value ="<%=a.getAddr_Details()%>" required="">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="name">Town</label>
+                                            <input type="text" readonly="" class="form-control" id="town" placeholder="E.g Tanjung Bungah" name="town"
+                                                   value ="<%=a.getTown()%>"  required="">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="email">Zipcode</label>
+                                            <input type="text" readonly="" class="form-control" id="zipcode" placeholder="E.g 11200" name="zipcode"
+                                                   value ="<%=a.getZipcode()%>"  required="">
+                                        </div>
+                                        <div class="col-md-6 select_input">
+                                            <label for="State">State</label>
+                                            <select class="form-control"  size="1"   value ="<%=a.getAddr_State()%>"  name="addr_state" readonly=""
+                                                    <option value="addr_state">State</option>
+                                                <option value="Johor">Johor</option>
+                                                <option value="Kedah">Kedah</option>
+                                                <option value="Kelantan">Kelantan</option>
+                                                <option value="Kuala Lumpur">Kuala Lumpur</option>
+                                                <option value="Labuan">Labuan</option>
+                                                <option value="Melaka">Melaka</option>
+                                                <option value="Negeri Sembilan">Negeri Sembilan</option>
+                                                <option value="Pahang">Pahang</option>
+                                                <option value="Penang">Penang</option>
+                                                <option value="Perak">Perak</option>
+                                                <option value="Perlis">Perlis</option>
+                                                <option value="Putrajaya">Putrajaya</option>
+                                                <option value="Sabah">Sabah</option>
+                                                <option value="Sarawak">Sarawak</option>
+                                                <option value="Selangor">Selangor</option>
+                                                <option value="Terengganu">Terengganu</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label for="review">Receiver Name</label>
+                                            <input type="text" readonly="" class="form-control" id="receiverName" placeholder="E.g 012-3456789" name="receiverName"
+                                                   value ="<%=a.getReceiverName()%>" required="">
+                                        </div>   
+
+                                        <div class="col-md-6">
+                                            <label for="review">Receiver Phone Number</label>
+                                            <input type="text" readonly="" class="form-control" id="receiverHP" placeholder="E.g 012-3456789" name="receiverHP"
+                                                   value ="<%=a.getReceiverHP()%>" required="">
+                                        </div>
+                                        <%}%>
+
+                                        <div class="col-md-12">
+                                            <a href = "NewAddress.jsp"<button class="btn btn-sm btn-solid" type="submit">Add New Address</button></a>
+                                        </div>
+
+                                </form>
+                            </div>
+                    </div>
+                </div>
+        </section>
+        <!-- Section ends -->
+
+
+
+        <%@include file="../cust.Footer.jsp" %>
+        <!-- tap to top End -->
+
+
+        <!-- latest jquery-->
+        <script src="../../../../assets/js/jquery-3.3.1.min.js"></script>
+
+        <!-- menu js-->
+        <script src="../../../../assets/js/menu.js"></script>
+
+        <!-- lazyload js-->
+        <script src="../../../../assets/js/lazysizes.min.js"></script>
+
+        <!-- slick js-->
+        <script src="../../../../assets/js/slick.js"></script>
+
+        <!-- Bootstrap js-->
+        <script src="../../../../assets/js/bootstrap.bundle.min.js"></script>
+
+        <!-- Bootstrap Notification js-->
+        <script src="../../../../assets/js/bootstrap-notify.min.js"></script>
+
+        <!-- Theme js-->
+        <script src="../../../../assets/js/theme-setting.js"></script>
+        <script src="../../../../assets/js/script.js"></script>
+
+        <script>
+            function openSearch() {
+                document.getElementById("search-overlay").style.display = "block";
+            }
+
+            function closeSearch() {
+                document.getElementById("search-overlay").style.display = "none";
+            }
+        </script>
+
+    </body>
+
+</html>
