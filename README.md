@@ -84,4 +84,4 @@ Provides backend access for managers and staff.
 
 > Due to GitHub size limitations, you can download the full source code from the following link:
 
-📦 [Download Innisfree Company.zip]([https://drive.google.com/file/d/1H_qEjeY4AwrzL20CmrHvPO8EIbCf-4X3/view?usp=sharing])
+📦 [Download Innisfree Company.zip](https://drive.google.com/file/d/1H_qEjeY4AwrzL20CmrHvPO8EIbCf-4X3/view?usp=sharing)
